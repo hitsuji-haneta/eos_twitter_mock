@@ -11,37 +11,31 @@ const api = new Api({ rpc, signatureProvider });
 class App extends Component {
 
   state = {
-    id: '',
-    status: 'loading..',
+    account: '',
+    name: '',
+    mail: '',
+    about: '',
     count: 0,
   };
 
   async componentDidMount() {
     try {
-      const result = await api.transact({
-        actions: [{
-          account: 'accountbook',
-          name: 'upsert',
-          authorization: [{
-            actor: 'alice',
-            permission: 'active',
-          }],
-          data: {
-            user: 'alice',
-            name: 'Alice Liddell',
-            mail: 'alice@mail.com',
-            about: 'Hi, this is Alice.',
-          },
-      }]
-      }, {
-        blocksBehind: 3,
-        expireSeconds: 30,
+      const resp = await rpc.get_table_rows({
+        json: true,
+        code: 'accountbook',
+        scope: 'accountbook',
+        table: 'people',
+        lower_bound: 'alice',
+        limit: 1,
       });
-      console.log(result);
-      const { transaction_id, processed } = result;
+      console.log(resp);
+      if (!resp.rows || resp.rows[0].length === 0) throw Error('get no rows');
+      const result = resp.rows[0];
       this.setState({
-        id: transaction_id,
-        status: processed.receipt.status,
+        account: result.key,
+        name: result.name,
+        mail: result.mail,
+        about: result.about,
       });
     } catch (e) {
       console.log('\nCaught exception: ' + e);
@@ -59,8 +53,10 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>{this.state.id}</p>
-          <p>{this.state.status}</p>
+          <p>id: {this.state.account}</p>
+          <p>名前: {this.state.name}</p>
+          <p>{this.state.mail}</p>
+          <p>{this.state.about}</p>
           <a
             className="App-link"
             href="https://reactjs.org"
