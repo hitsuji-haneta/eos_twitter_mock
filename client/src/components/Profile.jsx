@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   border-style: solid;
   border-radius: 10px;
   text-align: center;
+  background-color: white;
 `;
 
 const Profile = () => {

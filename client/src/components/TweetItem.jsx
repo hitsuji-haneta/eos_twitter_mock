@@ -5,6 +5,7 @@ const Wrapper = styled.div`
   padding: 20px;
   border-style: solid;
   border-width: 1px;
+  background-color: white;
 `;
 
 const TweetedAt = styled.p`

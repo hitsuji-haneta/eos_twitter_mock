@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   align-items: center;
   border-style: solid;
   border-radius: 10px;
+  background-color: white;
 `;
 
 const Input = styled.input`

@@ -20,6 +20,7 @@ const Text = styled.p`
   border-width: 1px;
   border-radius: 5px;
   text-align: center;
+  background-color: white;
 `;
 
 const Button = props => (
