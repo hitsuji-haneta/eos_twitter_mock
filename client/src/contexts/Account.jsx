@@ -9,40 +9,50 @@ class Provider extends React.Component {
   constructor(props) {
     super(props);
 
-    this.fetchAccountBook = async () => {
+    this.fetchAccountBook = async (name) => {
+      this.setState({
+        ...this.state,
+        status: 'loading',
+      });
       try {
         const resp = await rpc.get_table_rows({
           json: true,
           code: 'accountbook',
           scope: 'accountbook',
           table: 'people',
-          lower_bound: 'alice',
+          lower_bound: name,
+          upper_bound: name,
           limit: 1,
         });
-        if (!resp.rows || resp.rows.length === 0) throw Error('get no rows');
-        const result = resp.rows[0];
-        this.setState({
-          ...this.state,
-          account: result.key,
-          name: result.name,
-          mail: result.mail,
-          about: result.about,
-          isLoading: false,
-        });
+        if (!resp.rows || resp.rows.length === 0) {
+          this.setState({
+            ...this.state,
+            status: 'wrong',
+          });
+        } else {
+          const result = resp.rows[0];
+          this.setState({
+            ...this.state,
+            account: result.key,
+            name: result.name,
+            mail: result.mail,
+            about: result.about,
+            status: '',
+          });
+        }
       } catch (e) {
         console.log('\nCaught exception: ' + e);
         if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
       }
     };
 
-    this.fetchAccountBook();
-
     this.state = {
       account: '',
       name: '',
       mail: '',
       about: '',
-      isLoading: true,
+      fetchAccountBook: this.fetchAccountBook,
+      status: '',
     };
   }
 
