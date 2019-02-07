@@ -8,8 +8,8 @@ const Wrapper = styled.div`
 `;
 
 const TweetedAt = styled.p`
-  font-size: 0.8em;
-  font-color: gray;
+  font-size: 0.9em;
+  color: gray;
 `;
 
 const Text = styled.p`
@@ -25,7 +25,7 @@ const TweetItem = ({post}) => {
   console.log(post);
   const d = new Date(Number(post.tweeted_at));
   const tweetedAt =
-    `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${d.getHours()}時${d.getMinutes()}分`
+    `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${d.getMinutes()}`
   const { user, text } = post;
   return (
     <Wrapper>
