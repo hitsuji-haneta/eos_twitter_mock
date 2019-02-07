@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Account from './contexts/Account';
+import Post from './contexts/Post';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
 ReactDOM.render(
   <Account.Provider>
-    <App />
+    <Post.Provider>
+      <App/>
+    </Post.Provider>
   </Account.Provider>,
   document.getElementById('root'));
 serviceWorker.unregister();

@@ -9,24 +9,19 @@ class Provider extends React.Component {
   constructor(props) {
     super(props);
 
-    this.fetchAccountBook = async () => {
+    this.fetchPosts = async () => {
       try {
         const resp = await rpc.get_table_rows({
           json: true,
-          code: 'accountbook',
-          scope: 'accountbook',
-          table: 'people',
-          lower_bound: 'alice',
-          limit: 1,
+          code: 'twitter',
+          scope: 'twitter',
+          table: 'posts',
+          limit: 10,
         });
         if (!resp.rows || resp.rows.length === 0) throw Error('get no rows');
-        const result = resp.rows[0];
         this.setState({
           ...this.state,
-          account: result.key,
-          name: result.name,
-          mail: result.mail,
-          about: result.about,
+          posts: resp.rows,
           isLoading: false,
         });
       } catch (e) {
@@ -35,13 +30,11 @@ class Provider extends React.Component {
       }
     };
 
-    this.fetchAccountBook();
+    this.fetchPosts();
 
     this.state = {
-      account: '',
-      name: '',
-      mail: '',
-      about: '',
+      posts: [],
+      fetchPosts: this.fetchPosts,
       isLoading: true,
     };
   }
