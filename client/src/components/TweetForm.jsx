@@ -11,17 +11,19 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: flex-end;
 `;
-
 const Input = styled.textarea`
   width: 95%;
+`;
+const Message = styled.p`
+  color: blue;
 `;
 
 const Status = ({status}) => {
   switch (status) {
     case 'executed':
-      return <p>Send your tweet.</p>
+      return <Message>Send your tweet.</Message>
     case 'long':
-      return <p>Too long. 140 characters maximum.</p>
+      return <Message>Too long. 140 characters maximum.</Message>
     default:
       return <></>;
   }

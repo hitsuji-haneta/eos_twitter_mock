@@ -20,8 +20,8 @@ class Provider extends React.Component {
           code: 'accountbook',
           scope: 'accountbook',
           table: 'people',
-          lower_bound: name,
-          upper_bound: name,
+          lower_bound: name || 'EMPTY',
+          upper_bound: name || 'EMPTY',
           limit: 1,
         });
         if (!resp.rows || resp.rows.length === 0) {

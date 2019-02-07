@@ -9,7 +9,10 @@ const Wrapper = styled.div`
 const Clickable = styled.a`
   color: gray;
   text-decoration: none;
-  &: active { color: black; }
+  &: hover { color: black; }
+  &: active {
+    color: white;
+  }
 `;
 
 const Text = styled.p`
@@ -21,6 +24,9 @@ const Text = styled.p`
   border-radius: 5px;
   text-align: center;
   background-color: white;
+  &: active {
+    background-color: black;
+  }
 `;
 
 const Button = props => (

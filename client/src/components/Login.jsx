@@ -12,19 +12,22 @@ const Wrapper = styled.div`
   align-items: center;
   border-style: solid;
   border-radius: 10px;
+  border-width: 1px;
   background-color: white;
 `;
-
 const Input = styled.input`
   width: 50%;
+`;
+const Message = styled.p`
+  color: blue;
 `;
 
 const Status = ({status}) => {
   switch (status) {
     case 'wrong':
-      return <p>Invalid account</p>
+      return <Message>Invalid account</Message>
     case 'loading':
-      return <p>Now loading...</p>
+      return <Message>Now loading...</Message>
     default:
       return <></>;
   }
