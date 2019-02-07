@@ -16,7 +16,7 @@ class Provider extends React.Component {
           code: 'twitter',
           scope: 'twitter',
           table: 'posts',
-          limit: 10,
+          limit: 100,
         });
         if (!resp.rows || resp.rows.length === 0) throw Error('get no rows');
         this.setState({

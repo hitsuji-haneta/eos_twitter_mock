@@ -22,7 +22,6 @@ const User = styled.p`
 `;
 
 const TweetItem = ({post}) => {
-  console.log(post);
   const d = new Date(Number(post.tweeted_at));
   const tweetedAt =
     `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${d.getMinutes()}`

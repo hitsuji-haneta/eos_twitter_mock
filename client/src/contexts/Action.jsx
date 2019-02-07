@@ -9,12 +9,59 @@ const signatureProvider = new JsSignatureProvider([defaultPrivateKey]);
 const api = new Api({ rpc, signatureProvider });
 const Context = React.createContext();
 
-const tweet = (text) => console.log(text);
 class Provider extends React.Component {
   constructor(props) {
     super(props);
+    this.tweet = async (text) => {
+      if(text.length < 140) {
+        try {
+          const result = await api.transact({
+            actions: [{
+              account: 'twitter',
+              name: 'tweet',
+              authorization: [{
+                  actor: 'alice',
+                  permission: 'active',
+              }],
+              data: {
+                  user: 'alice',
+                  text: text,
+                  tweeted_at: (new Date()).getTime(),
+              },
+          }]
+          }, {
+            blocksBehind: 3,
+            expireSeconds: 30,
+          });
+          console.log(result);
+          const { processed } = result;
+          this.setState({
+            ...this.state,
+            status: processed.receipt.status,
+          });
+        } catch (e) {
+          console.log('\nCaught exception: ' + e);
+          if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
+        }
+      } else {
+        this.setState({
+          ...this.state,
+          status: 'long',
+        });
+      }
+    };
+
+    this.changeStatus = (newStatus) => {
+      this.setState({
+        ...this.state,
+        status: newStatus,
+      });
+    }
+
     this.state = {
-      tweet,
+      tweet: this.tweet,
+      status: '',
+      changeStatus: this.changeStatus,
     }
   }
   render() {
