@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import Action from '../contexts/Action';
 import Account from '../contexts/Account';
 import Button from '../shared/Button';
 
@@ -44,11 +45,19 @@ const Status = ({status}) => {
 }
 
 const SignIn = ({switchLogin}) => {
-  const { fetchAccountBook, status } = useContext(Account.Context) || {};
+  const { signIn, status, changeStatus } = useContext(Action.Context) || {};
+  const { fetchAccountBook } = useContext(Account.Context) || {};
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [mail, setMail] = useState('');
   const [about, setAbout] = useState('');
+
+  useEffect(() => {
+    if(status === 'executed') {
+      changeStatus('');
+      fetchAccountBook(id);
+    };
+  });
 
   return (
     <Container>
@@ -64,7 +73,7 @@ const SignIn = ({switchLogin}) => {
       </Wrapper>
       about:
       <InputArea value={about} rows="5" onChange={(e) => setAbout(e.target.value)} />
-      <Button onClick={() => console.log('signin')}>sign in</Button>
+      <Button onClick={() => signIn(id, name, mail, about)}>sign in</Button>
       <Message>or</Message>
       <Button onClick={switchLogin}>login</Button>
     </Container>

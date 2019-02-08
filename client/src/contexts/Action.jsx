@@ -64,6 +64,35 @@ class Provider extends React.Component {
       }
     };
 
+    this.signIn = async (id, name, mail, about) => {
+      this.setState({
+        ...this.state,
+        status: 'loading',
+      });
+      try {
+        const data = {
+          user: id,
+          name,
+          mail,
+          about,
+        };
+        const result = await action('accountbook', 'create', id, data);
+        const { processed } = result;
+        this.setState({
+          ...this.state,
+          status: processed.receipt.status,
+        });
+      } catch (e) {
+        this.setState({
+          ...this.state,
+          status: 'wrong',
+        });
+        console.log('\nCaught exception: ' + e);
+        if (e instanceof RpcError)
+          console.log(JSON.stringify(e.json, null, 2));
+      }
+    };
+
     this.changeStatus = newStatus => {
       this.setState({
         ...this.state,
@@ -73,6 +102,7 @@ class Provider extends React.Component {
 
     this.state = {
       tweet: this.tweet,
+      signIn: this.signIn,
       status: '',
       changeStatus: this.changeStatus
     };
