@@ -1,7 +1,29 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Wed Feb  6 16:32:59 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Fri Feb  8 23:02:04 2019",
     "version": "eosio::abi/1.1",
     "structs": [
+        {
+            "name": "create",
+            "base": "",
+            "fields": [
+                {
+                    "name": "user",
+                    "type": "name"
+                },
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "mail",
+                    "type": "string"
+                },
+                {
+                    "name": "about",
+                    "type": "string"
+                }
+            ]
+        },
         {
             "name": "erase",
             "base": "",
@@ -35,7 +57,7 @@
             ]
         },
         {
-            "name": "upsert",
+            "name": "update",
             "base": "",
             "fields": [
                 {
@@ -60,13 +82,18 @@
     "types": [],
     "actions": [
         {
+            "name": "create",
+            "type": "create",
+            "ricardian_contract": ""
+        },
+        {
             "name": "erase",
             "type": "erase",
             "ricardian_contract": ""
         },
         {
-            "name": "upsert",
-            "type": "upsert",
+            "name": "update",
+            "type": "update",
             "ricardian_contract": ""
         }
     ],

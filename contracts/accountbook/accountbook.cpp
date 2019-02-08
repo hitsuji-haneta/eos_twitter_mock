@@ -8,10 +8,10 @@ class [[eosio::contract]] accountbook : public eosio::contract {
       name receiver,
       name code,
       datastream<const char*> ds
-    ):contract(receiver, code, ds) {}
+    ): contract(receiver, code, ds) {}
 
     [[eosio::action]]
-    void upsert(
+    void create(
       name user,
       std::string name,
       std::string mail,
@@ -20,21 +20,32 @@ class [[eosio::contract]] accountbook : public eosio::contract {
       require_auth(user);
       account_index accounts(_code, _code.value);
       auto iterator = accounts.find(user.value);
-      if (iterator == accounts.end()) {
-        accounts.emplace(user, [&](auto& row) {
-          row.key = user;
-          row.name = name;
-          row.mail = mail;
-          row.about = about;
-        });
-      } else {
-        accounts.modify(iterator, user, [&](auto& row) {
-          row.key = user;
-          row.name = name;
-          row.mail = mail;
-          row.about = about;
-        });
-      }
+      eosio_assert(iterator == accounts.end(), "Record already exists");
+      accounts.emplace(user, [&](auto& row) {
+        row.key = user;
+        row.name = name;
+        row.mail = mail;
+        row.about = about;
+      });
+    }
+
+    [[eosio::action]]
+    void update(
+      name user,
+      std::string name,
+      std::string mail,
+      std::string about
+    ) {
+      require_auth(user);
+      account_index accounts(_code, _code.value);
+      auto iterator = accounts.find(user.value);
+      eosio_assert(iterator != accounts.end(), "Record does not exist");
+      accounts.modify(iterator, user, [&](auto& row) {
+        row.key = user;
+        row.name = name;
+        row.mail = mail;
+        row.about = about;
+      });
     }
 
     [[eosio::action]]
@@ -59,4 +70,4 @@ class [[eosio::contract]] accountbook : public eosio::contract {
 };
 
 
-EOSIO_DISPATCH( accountbook, (upsert)(erase))
+EOSIO_DISPATCH( accountbook, (create)(update)(erase))
