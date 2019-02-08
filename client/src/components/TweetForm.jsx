@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Action from '../contexts/Action';
 import Post from '../contexts/Post';
+import Account from '../contexts/Account';
 import Button from '../shared/Button';
 
 const Wrapper = styled.div`
@@ -32,6 +33,7 @@ const Status = ({status}) => {
 const TweetForm = () => {
   const { tweet, status, changeStatus } = useContext(Action.Context) || {};
   const postContext = useContext(Post.Context);
+  const { id } = useContext(Account.Context);
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const TweetForm = () => {
     <Wrapper>
       <Status status={status} />
       <Input value={text} rows="5" onChange={(e) => setText(e.target.value)} />
-      <Button onClick={() => tweet(text)}>tweet</Button>
+      <Button onClick={() => tweet(text, id)}>tweet</Button>
     </Wrapper>
   );
 };

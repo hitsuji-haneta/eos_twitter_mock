@@ -12,8 +12,8 @@ const Wrapper = styled.div`
 `;
 
 const Profile = () => {
-  const { account, name, mail, about } = useContext(Account.Context) || {
-    account: '',
+  const { id, name, mail, about } = useContext(Account.Context) || {
+    id: '',
     name: '',
     mail: '',
     about: '',
@@ -21,7 +21,7 @@ const Profile = () => {
 
   return (
     <Wrapper>
-      <p>id: {account}</p>
+      <p>id: {id}</p>
       <p>name: {name}</p>
       <p>{mail}</p>
       <p>{about}</p>

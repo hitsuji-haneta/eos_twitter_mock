@@ -9,7 +9,7 @@ class Provider extends React.Component {
   constructor(props) {
     super(props);
 
-    this.fetchAccountBook = async (name) => {
+    this.fetchAccountBook = async (id) => {
       this.setState({
         ...this.state,
         status: 'loading',
@@ -20,8 +20,8 @@ class Provider extends React.Component {
           code: 'accountbook',
           scope: 'accountbook',
           table: 'people',
-          lower_bound: name || 'EMPTY',
-          upper_bound: name || 'EMPTY',
+          lower_bound: id || 'EMPTY',
+          upper_bound: id || 'EMPTY',
           limit: 1,
         });
         if (!resp.rows || resp.rows.length === 0) {
@@ -33,7 +33,7 @@ class Provider extends React.Component {
           const result = resp.rows[0];
           this.setState({
             ...this.state,
-            account: result.key,
+            id: result.key,
             name: result.name,
             mail: result.mail,
             about: result.about,
@@ -47,7 +47,7 @@ class Provider extends React.Component {
     };
 
     this.state = {
-      account: '',
+      id: '',
       name: '',
       mail: '',
       about: '',

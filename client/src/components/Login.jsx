@@ -36,13 +36,13 @@ const Status = ({status}) => {
 
 const Login = ({switchSignIn}) => {
   const { fetchAccountBook, status } = useContext(Account.Context) || {};
-  const [name, setName] = useState('');
+  const [id, setId] = useState('');
 
   return (
     <Wrapper>
       <Status status={status} />
-      <Input value={name} type="text" onChange={(e) => setName(e.target.value)} />
-      <Button onClick={() => fetchAccountBook(name)}>login</Button>
+      <Input value={id} type="text" onChange={(e) => setId(e.target.value)} />
+      <Button onClick={() => fetchAccountBook(id)}>login</Button>
       <Message>or</Message>
       <Button onClick={switchSignIn}>sign in</Button>
     </Wrapper>

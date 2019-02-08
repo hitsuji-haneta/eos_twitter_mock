@@ -19,8 +19,8 @@ const Right = styled.div`
   width: 60%;
 `;
 
-const switchLeft = (account, isLogin, switchLogin) => {
-  if (account) {
+const switchLeft = (id, isLogin, switchLogin) => {
+  if (id) {
     return (
       <>
         <Profile />
@@ -37,12 +37,12 @@ const switchLeft = (account, isLogin, switchLogin) => {
 };
 
 const App = () => {
-  const { account } = useContext(Account.Context) || {};
+  const { id } = useContext(Account.Context) || {};
   const [isLogin, switchLogin] = useState(true);
 
   return (
     <Wrapper>
-      <Left>{switchLeft(account, isLogin, switchLogin)}</Left>
+      <Left>{switchLeft(id, isLogin, switchLogin)}</Left>
       <Right>
         <TweetList />
       </Right>
