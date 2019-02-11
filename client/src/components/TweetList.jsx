@@ -14,8 +14,10 @@ const ButtonWrapper = styled.div`
 `;
 
 const TweetList = () => {
-  const {state, fetchPosts} = useContext(Post.Context) || {};
-  const posts = state ? state.posts : [];
+  const { state, fetchPosts } = useContext(Post.Context) || {};
+  const posts = state
+    ? state.posts.sort((a, b) => b.tweeted_at - a.tweeted_at)
+    : [];
   return (
     <>
       <Wrapper>
