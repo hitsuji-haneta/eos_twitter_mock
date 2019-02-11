@@ -1,69 +1,59 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 import { RpcError } from 'eosjs';
 import rpc from '../shared/rpc';
 
 const Context = React.createContext();
 
-class Provider extends React.Component {
-  constructor(props) {
-    super(props);
+const initialState = {
+  id: '',
+  name: '',
+  mail: '',
+  about: '',
+  status: '',
+};
 
-    this.fetchAccountBook = async (id) => {
-      this.setState({
-        ...this.state,
-        status: 'loading',
+const Provider = ({children}) => {
+  const [state, setState] = useState(initialState);
+  const fetchAccountBook = async (id) => {
+    setState({
+      ...state,
+      status: 'loading',
+    });
+    try {
+      const resp = await rpc.get_table_rows({
+        json: true,
+        code: 'accountbook',
+        scope: 'accountbook',
+        table: 'people',
+        lower_bound: id || 'EMPTY',
+        upper_bound: id || 'EMPTY',
+        limit: 1,
       });
-      try {
-        const resp = await rpc.get_table_rows({
-          json: true,
-          code: 'accountbook',
-          scope: 'accountbook',
-          table: 'people',
-          lower_bound: id || 'EMPTY',
-          upper_bound: id || 'EMPTY',
-          limit: 1,
+      if (!resp.rows || resp.rows.length === 0) {
+        setState({
+          ...state,
+          status: 'wrong',
         });
-        if (!resp.rows || resp.rows.length === 0) {
-          this.setState({
-            ...this.state,
-            status: 'wrong',
-          });
-        } else {
-          const result = resp.rows[0];
-          this.setState({
-            ...this.state,
-            id: result.key,
-            name: result.name,
-            mail: result.mail,
-            about: result.about,
-            status: '',
-          });
-        }
-      } catch (e) {
-        console.log('\nCaught exception: ' + e);
-        if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
+      } else {
+        const result = resp.rows[0];
+        setState({
+          ...state,
+          id: result.key,
+          name: result.name,
+          mail: result.mail,
+          about: result.about,
+          status: '',
+        });
       }
-    };
+    } catch (e) {
+      console.log('\nCaught exception: ' + e);
+      if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
+    }
+  };
 
-    this.state = {
-      id: '',
-      name: '',
-      mail: '',
-      about: '',
-      fetchAccountBook: this.fetchAccountBook,
-      status: '',
-    };
-  }
-
-  render() {
-    return (
-      <Context.Provider value={this.state}>
-        {this.props.children}
-      </Context.Provider>
-    );
-  }
-}
+  return <Context.Provider value={{state, fetchAccountBook}}>{children}</Context.Provider>
+};
 
 export default {
   Provider,

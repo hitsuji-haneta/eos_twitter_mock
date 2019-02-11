@@ -37,7 +37,9 @@ const switchLeft = (id, isLogin, switchLogin) => {
 };
 
 const App = () => {
-  const { id } = useContext(Account.Context) || {};
+  const { id } = useContext(Account.Context)
+    ? useContext(Account.Context).state
+    : {};
   const [isLogin, switchLogin] = useState(true);
 
   return (

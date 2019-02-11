@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 `;
 
 const Profile = () => {
-  const { id, name, mail, about } = useContext(Account.Context) || {
+  const { id, name, mail, about } = useContext(Account.Context).state || {
     id: '',
     name: '',
     mail: '',

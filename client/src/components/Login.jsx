@@ -35,8 +35,9 @@ const Status = ({status}) => {
 }
 
 const Login = ({switchSignIn}) => {
-  const { fetchAccountBook, status } = useContext(Account.Context) || {};
+  const { fetchAccountBook, state } = useContext(Account.Context) || {};
   const [id, setId] = useState('');
+  const status = state ? state.status : 'loading';
 
   return (
     <Wrapper>
