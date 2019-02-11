@@ -14,10 +14,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const TweetList = () => {
-  const postContext = useContext(Post.Context) || {};
-  const posts = postContext.posts
-    ? postContext.posts.sort((a, b) => b.tweeted_at - a.tweeted_at)
-    : [];
+  const {state, fetchPosts} = useContext(Post.Context) || {};
+  const posts = state ? state.posts : [];
   return (
     <>
       <Wrapper>
@@ -26,7 +24,7 @@ const TweetList = () => {
         ))}
       </Wrapper>
       <ButtonWrapper>
-        <Button onClick={() => postContext.fetchPosts()}>more!!</Button>
+        <Button onClick={() => fetchPosts()}>more!!</Button>
       </ButtonWrapper>
     </>
   );

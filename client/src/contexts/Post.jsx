@@ -1,55 +1,50 @@
-import * as React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { RpcError } from 'eosjs';
 import rpc from '../shared/rpc';
 
 const Context = React.createContext();
 
-class Provider extends React.Component {
-  constructor(props) {
-    super(props);
+const initialState = {
+  posts: [],
+  isLoading: true,
+};
 
-    this.fetchPosts = async () => {
-      try {
-        const resp = await rpc.get_table_rows({
-          json: true,
-          code: 'twitter',
-          scope: 'twitter',
-          table: 'posts',
-          limit: 100,
-        });
-        if (!resp.rows || resp.rows.length === 0) throw Error('get no rows');
-        this.setState({
-          ...this.state,
-          posts: resp.rows,
-          isLoading: false,
-        });
-      } catch (e) {
-        console.log('\nCaught exception: ' + e);
-        if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
-      }
-    };
+const Provider = ({children}) => {
+  const [state, setState] = useState(initialState);
+  const fetchPosts = async () => {
+    try {
+      const resp = await rpc.get_table_rows({
+        json: true,
+        code: 'twitter',
+        scope: 'twitter',
+        table: 'posts',
+        limit: 100,
+      });
+      if (!resp.rows || resp.rows.length === 0) throw Error('get no rows');
+      setState({
+        ...state,
+        posts: resp.rows,
+        isLoading: true,
+      });
+    } catch (e) {
+      console.log('\nCaught exception: ' + e);
+      if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
+    }
+  };
 
-    this.fetchPosts();
+  const isFirstRef = useRef(true);
+  useEffect(() => {
+    if(isFirstRef.current) {
+      fetchPosts();
+      isFirstRef.current = false;
+    }
+  });
 
-    this.state = {
-      posts: [],
-      fetchPosts: this.fetchPosts,
-      isLoading: true,
-    };
-  }
-
-  render() {
-    return (
-      <Context.Provider value={this.state}>
-        {this.props.children}
-      </Context.Provider>
-    );
-  }
-}
+  return <Context.Provider value={{state, fetchPosts}}>{children}</Context.Provider>
+};
 
 export default {
-  Consumer: Context.Consumer,
   Provider,
   Context,
 };
