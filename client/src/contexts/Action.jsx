@@ -52,9 +52,16 @@ class Provider extends React.Component {
             status: processed.receipt.status
           });
         } catch (e) {
+          let status = e;
           console.log('\nCaught exception: ' + e);
-          if (e instanceof RpcError)
+          if (e instanceof RpcError) {
+            status += `: ${e.json.error.what}`;
             console.log(JSON.stringify(e.json, null, 2));
+          }
+          this.setState({
+            ...this.state,
+            status,
+          });
         }
       } else {
         this.setState({

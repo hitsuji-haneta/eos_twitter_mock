@@ -25,8 +25,10 @@ const Status = ({status}) => {
       return <Message>Send your tweet.</Message>
     case 'long':
       return <Message>Too long. 140 characters maximum.</Message>
-    default:
+    case '':
       return <></>;
+    default:
+      return <Message>{status}</Message>
   }
 }
 
