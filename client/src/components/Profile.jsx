@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import Account from '../contexts/Account';
 import Button from '../shared/Button';
+import EditProfile from './EditProfile';
 
 const Container = styled.div`
   margin: 20px;
@@ -25,19 +26,27 @@ const Profile = () => {
     mail: '',
     about: '',
   };
+  const [isEdit, toggleEdit] = useState(false);
 
-  return (
-    <Container>
-      <p>id: {id}</p>
-      <p>name: {name}</p>
-      <p>{mail}</p>
-      <p>{about}</p>
-      <Wrapper>
-        <Button onClick={() => console.log('updateProfile')}>Update</Button>
-        <Button onClick={() => console.log('deleteAccount')}>Delete</Button>
-      </Wrapper>
-    </Container>
-  );
+  const profileView = () => {
+    if (isEdit) {
+      return <EditProfile />;
+    } else {
+      return (
+        <Container>
+          <p>id: {id}</p>
+          <p>name: {name}</p>
+          <p>{mail}</p>
+          <p>{about}</p>
+          <Wrapper>
+            <Button onClick={() => toggleEdit(true)}>Update</Button>
+          </Wrapper>
+        </Container>
+      );
+    }
+  };
+
+  return profileView();
 };
 
 export default Profile;
