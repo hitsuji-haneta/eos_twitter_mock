@@ -33,7 +33,7 @@ const Status = ({status}) => {
 }
 
 const TweetForm = () => {
-  const { tweet, status, changeStatus } = useContext(Action.Context) || {};
+  const { tweet, status, changeStatus } = useContext(Action.Context);
   const postContext = useContext(Post.Context);
   const { id } = useContext(Account.Context).state;
   const [text, setText] = useState('');
