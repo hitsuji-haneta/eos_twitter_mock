@@ -133,12 +133,36 @@ const Provider = ({children}) => {
     }
   };
 
+  const deleteUser = async (id) => {
+    setState({
+      ...state,
+      status: 'loading',
+    });
+    try {
+      const result = await action('accountbook', 'delete', id);
+      const { processed } = result;
+      setState({
+        ...state,
+        status: processed.receipt.status,
+      });
+    } catch (e) {
+      setState({
+        ...state,
+        status: 'wrong',
+      });
+      console.log('\nCaught exception: ' + e);
+      if (e instanceof RpcError)
+        console.log(JSON.stringify(e.json, null, 2));
+    }
+  };
+
   const initialState = {
     status: '',
     tweet,
     signIn,
     updateProfile,
     changeStatus,
+    deleteUser,
   };
   const [state, setState] = useState(initialState);
 
