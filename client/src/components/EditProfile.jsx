@@ -45,7 +45,7 @@ const Status = ({ actionStatus }) => {
 };
 
 const EditProfile = ({ toggleEdit }) => {
-  const { state, fetchAccountBook } = useContext(Account.Context);
+  const { state, fetchAccountBook, resetAccount } = useContext(Account.Context);
   const { id, name, mail, about } = state;
   const { actionStatus, changeStatus, updateProfile, deleteUser } = useContext(
     Action.Context
@@ -55,7 +55,10 @@ const EditProfile = ({ toggleEdit }) => {
   const [newAbout, setAbout] = useState(about);
 
   useEffect(() => {
-    if (actionStatus === 'executed') {
+    if (actionStatus === 'executed:delete') {
+      toggleEdit(false);
+      resetAccount();
+    } else if (actionStatus === 'executed') {
       changeStatus('');
       toggleEdit(false);
       fetchAccountBook(id);

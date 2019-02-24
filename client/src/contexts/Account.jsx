@@ -15,6 +15,9 @@ const initialState = {
 
 const Provider = ({children}) => {
   const [state, setState] = useState(initialState);
+  const resetAccount = () => {
+    setState(initialState);
+  };
   const fetchAccountBook = async (id) => {
     setState({
       ...state,
@@ -52,7 +55,7 @@ const Provider = ({children}) => {
     }
   };
 
-  return <Context.Provider value={{state, fetchAccountBook}}>{children}</Context.Provider>
+  return <Context.Provider value={{state, fetchAccountBook, resetAccount}}>{children}</Context.Provider>
 };
 
 export default {

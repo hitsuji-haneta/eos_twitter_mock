@@ -144,7 +144,7 @@ const Provider = ({ children }) => {
       const { processed } = result;
       setState({
         ...state,
-        actionStatus: processed.receipt.status
+        actionStatus: `${processed.receipt.status}:delete`
       });
     } catch (e) {
       setState({
