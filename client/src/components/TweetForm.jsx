@@ -19,8 +19,8 @@ const Message = styled.p`
   color: blue;
 `;
 
-const Status = ({status}) => {
-  switch (status) {
+const Status = ({actionStatus}) => {
+  switch (actionStatus) {
     case 'executed':
       return <Message>Send your tweet.</Message>
     case 'long':
@@ -28,18 +28,18 @@ const Status = ({status}) => {
     case '':
       return <></>;
     default:
-      return <Message>{status}</Message>
+      return <Message>{actionStatus}</Message>
   }
 }
 
 const TweetForm = () => {
-  const { tweet, status, changeStatus } = useContext(Action.Context);
+  const { tweet, actionStatus, changeStatus } = useContext(Action.Context);
   const postContext = useContext(Post.Context);
   const { id } = useContext(Account.Context).state;
   const [text, setText] = useState('');
 
   useEffect(() => {
-    if(status === 'executed') {
+    if(actionStatus === 'executed') {
       setText('');
       postContext.fetchPosts();
       setTimeout(() => {
@@ -50,7 +50,7 @@ const TweetForm = () => {
 
   return (
     <Wrapper>
-      <Status status={status} />
+      <Status actionStatus={actionStatus} />
       <Input value={text} rows="5" onChange={(e) => setText(e.target.value)} />
       <Button onClick={() => tweet(text, id)}>tweet</Button>
     </Wrapper>

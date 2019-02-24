@@ -33,8 +33,8 @@ const Message = styled.p`
   color: ${props => props.color || "black"};
 `;
 
-const Status = ({status}) => {
-  switch (status) {
+const Status = ({actionStatus}) => {
+  switch (actionStatus) {
     case 'wrong':
       return <Message color='blue'>Invalid account</Message>
     case 'loading':
@@ -45,7 +45,7 @@ const Status = ({status}) => {
 }
 
 const SignIn = ({switchLogin}) => {
-  const { signIn, status, changeStatus } = useContext(Action.Context) || {};
+  const { signIn, actionStatus, changeStatus } = useContext(Action.Context) || {};
   const { fetchAccountBook } = useContext(Account.Context) || {};
   const [id, setId] = useState('');
   const [name, setName] = useState('');
@@ -53,7 +53,7 @@ const SignIn = ({switchLogin}) => {
   const [about, setAbout] = useState('');
 
   useEffect(() => {
-    if(status === 'executed') {
+    if(actionStatus === 'executed') {
       changeStatus('');
       fetchAccountBook(id);
     };
@@ -61,7 +61,7 @@ const SignIn = ({switchLogin}) => {
 
   return (
     <Container>
-      <Status status={status} />
+      <Status actionStatus={actionStatus} />
       <Wrapper>
         id: <Input value={id} type="text" onChange={(e) => setId(e.target.value)} />
       </Wrapper>

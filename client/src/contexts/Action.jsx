@@ -37,7 +37,7 @@ const Provider = ({children}) => {
   const changeStatus = newStatus => {
     setState({
       ...state,
-      status: newStatus
+      actionStatus: newStatus
     });
   };
 
@@ -53,7 +53,7 @@ const Provider = ({children}) => {
         const { processed } = result;
         setState({
           ...state,
-          status: processed.receipt.status
+          actionStatus: processed.receipt.status
         });
       } catch (e) {
         let status = e;
@@ -70,7 +70,7 @@ const Provider = ({children}) => {
     } else {
       setState({
         ...state,
-        status: 'long'
+        actionStatus: 'long'
       });
     }
   };
@@ -78,7 +78,7 @@ const Provider = ({children}) => {
   const signIn = async (id, name, mail, about) => {
     setState({
       ...state,
-      status: 'loading',
+      actionStatus: 'loading',
     });
     try {
       const data = {
@@ -91,12 +91,12 @@ const Provider = ({children}) => {
       const { processed } = result;
       setState({
         ...state,
-        status: processed.receipt.status,
+        actionStatus: processed.receipt.status,
       });
     } catch (e) {
       setState({
         ...state,
-        status: 'wrong',
+        actionStatus: 'wrong',
       });
       console.log('\nCaught exception: ' + e);
       if (e instanceof RpcError)
@@ -107,7 +107,7 @@ const Provider = ({children}) => {
   const updateProfile = async (id, name, mail, about) => {
     setState({
       ...state,
-      status: 'loading',
+      actionStatus: 'loading',
     });
     try {
       const data = {
@@ -120,12 +120,12 @@ const Provider = ({children}) => {
       const { processed } = result;
       setState({
         ...state,
-        status: processed.receipt.status,
+        actionStatus: processed.receipt.status,
       });
     } catch (e) {
       setState({
         ...state,
-        status: 'wrong',
+        actionStatus: 'wrong',
       });
       console.log('\nCaught exception: ' + e);
       if (e instanceof RpcError)
@@ -136,19 +136,19 @@ const Provider = ({children}) => {
   const deleteUser = async (id) => {
     setState({
       ...state,
-      status: 'loading',
+      actionStatus: 'loading',
     });
     try {
       const result = await action('accountbook', 'delete', id);
       const { processed } = result;
       setState({
         ...state,
-        status: processed.receipt.status,
+        actionStatus: processed.receipt.status,
       });
     } catch (e) {
       setState({
         ...state,
-        status: 'wrong',
+        actionStatus: 'wrong',
       });
       console.log('\nCaught exception: ' + e);
       if (e instanceof RpcError)
@@ -157,7 +157,7 @@ const Provider = ({children}) => {
   };
 
   const initialState = {
-    status: '',
+    actionStatus: '',
     tweet,
     signIn,
     updateProfile,

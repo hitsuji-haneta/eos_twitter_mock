@@ -33,8 +33,8 @@ const Message = styled.p`
   color: ${props => props.color || "black"};
 `;
 
-const Status = ({status}) => {
-  switch (status) {
+const Status = ({actionStatus}) => {
+  switch (actionStatus) {
     case 'wrong':
       return <Message color='blue'>Invalid account</Message>
     case 'loading':
@@ -47,13 +47,13 @@ const Status = ({status}) => {
 const EditProfile = ({toggleEdit}) => {
   const { state, fetchAccountBook } = useContext(Account.Context);
   const { id, name, mail, about } = state;
-  const { status, changeStatus, updateProfile } = useContext(Action.Context);
+  const { actionStatus, changeStatus, updateProfile } = useContext(Action.Context);
   const [newName, setName] = useState(name);
   const [newMail, setMail] = useState(mail);
   const [newAbout, setAbout] = useState(about);
 
   useEffect(() => {
-    if(status === 'executed') {
+    if(actionStatus === 'executed') {
       changeStatus('');
       toggleEdit(false);
       fetchAccountBook(id);
@@ -62,7 +62,7 @@ const EditProfile = ({toggleEdit}) => {
 
   return (
     <Container>
-      <Status status={status} />
+      <Status actionStatus={actionStatus} />
       id:{id}
       <Wrapper>
         name: <Input value={newName} type="text" onChange={(e) => setName(e.target.value)} />
