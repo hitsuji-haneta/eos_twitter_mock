@@ -44,9 +44,10 @@ const Status = ({status}) => {
   }
 }
 
-const EditProfile = () => {
-  const { id, name, mail, about } = useContext(Account.Context).state;
-  const { fetchAccountBook, status, changeStatus } = useContext(Action.Context) || {};
+const EditProfile = ({toggleEdit}) => {
+  const { state, fetchAccountBook } = useContext(Account.Context);
+  const { id, name, mail, about } = state;
+  const { status, changeStatus, updateProfile } = useContext(Action.Context);
   const [newName, setName] = useState(name);
   const [newMail, setMail] = useState(mail);
   const [newAbout, setAbout] = useState(about);
@@ -54,6 +55,7 @@ const EditProfile = () => {
   useEffect(() => {
     if(status === 'executed') {
       changeStatus('');
+      toggleEdit(false);
       fetchAccountBook(id);
     };
   });
@@ -70,7 +72,7 @@ const EditProfile = () => {
       </Wrapper>
       about:
       <InputArea value={newAbout} rows="5" onChange={(e) => setAbout(e.target.value)} />
-      <Button onClick={() => console.log(`${id}, ${newName}, ${newMail}, ${newAbout}`)}>submit</Button>
+      <Button onClick={() => updateProfile(id, newName, newMail, newAbout)}>submit</Button>
       <Message>or</Message>
       <Button onClick={()=>console.log('delete')}>delete</Button>
     </Container>

@@ -30,7 +30,7 @@ const Profile = () => {
 
   const profileView = () => {
     if (isEdit) {
-      return <EditProfile />;
+      return <EditProfile toggleEdit={toggleEdit}/>;
     } else {
       return (
         <Container>

@@ -104,10 +104,40 @@ const Provider = ({children}) => {
     }
   };
 
+  const updateProfile = async (id, name, mail, about) => {
+    setState({
+      ...state,
+      status: 'loading',
+    });
+    try {
+      const data = {
+        user: id,
+        name,
+        mail,
+        about,
+      };
+      const result = await action('accountbook', 'update', id, data);
+      const { processed } = result;
+      setState({
+        ...state,
+        status: processed.receipt.status,
+      });
+    } catch (e) {
+      setState({
+        ...state,
+        status: 'wrong',
+      });
+      console.log('\nCaught exception: ' + e);
+      if (e instanceof RpcError)
+        console.log(JSON.stringify(e.json, null, 2));
+    }
+  };
+
   const initialState = {
     status: '',
     tweet,
     signIn,
+    updateProfile,
     changeStatus,
   };
   const [state, setState] = useState(initialState);
