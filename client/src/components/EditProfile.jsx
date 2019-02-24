@@ -30,34 +30,36 @@ const InputArea = styled.textarea`
 `;
 const Message = styled.p`
   margin: 0 auto;
-  color: ${props => props.color || "black"};
+  color: ${props => props.color || 'black'};
 `;
 
-const Status = ({actionStatus}) => {
+const Status = ({ actionStatus }) => {
   switch (actionStatus) {
     case 'wrong':
-      return <Message color='blue'>Invalid account</Message>
+      return <Message color='blue'>Invalid account</Message>;
     case 'loading':
-      return <Message color='blue'>Now loading...</Message>
+      return <Message color='blue'>Now loading...</Message>;
     default:
       return <></>;
   }
-}
+};
 
-const EditProfile = ({toggleEdit}) => {
+const EditProfile = ({ toggleEdit }) => {
   const { state, fetchAccountBook } = useContext(Account.Context);
   const { id, name, mail, about } = state;
-  const { actionStatus, changeStatus, updateProfile } = useContext(Action.Context);
+  const { actionStatus, changeStatus, updateProfile, deleteUser } = useContext(
+    Action.Context
+  );
   const [newName, setName] = useState(name);
   const [newMail, setMail] = useState(mail);
   const [newAbout, setAbout] = useState(about);
 
   useEffect(() => {
-    if(actionStatus === 'executed') {
+    if (actionStatus === 'executed') {
       changeStatus('');
       toggleEdit(false);
       fetchAccountBook(id);
-    };
+    }
   });
 
   return (
@@ -65,18 +67,34 @@ const EditProfile = ({toggleEdit}) => {
       <Status actionStatus={actionStatus} />
       id:{id}
       <Wrapper>
-        name: <Input value={newName} type="text" onChange={(e) => setName(e.target.value)} />
+        name:{' '}
+        <Input
+          value={newName}
+          type='text'
+          onChange={e => setName(e.target.value)}
+        />
       </Wrapper>
       <Wrapper>
-        mail: <Input value={newMail} type="text" onChange={(e) => setMail(e.target.value)} />
+        mail:{' '}
+        <Input
+          value={newMail}
+          type='text'
+          onChange={e => setMail(e.target.value)}
+        />
       </Wrapper>
       about:
-      <InputArea value={newAbout} rows="5" onChange={(e) => setAbout(e.target.value)} />
-      <Button onClick={() => updateProfile(id, newName, newMail, newAbout)}>submit</Button>
+      <InputArea
+        value={newAbout}
+        rows='5'
+        onChange={e => setAbout(e.target.value)}
+      />
+      <Button onClick={() => updateProfile(id, newName, newMail, newAbout)}>
+        submit
+      </Button>
       <Message>or</Message>
-      <Button onClick={()=>console.log('delete')}>delete</Button>
+      <Button onClick={() => deleteUser(id)}>delete</Button>
     </Container>
   );
-}
+};
 
 export default EditProfile;
