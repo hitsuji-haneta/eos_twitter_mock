@@ -46,12 +46,18 @@ const handleAction = async (contractName, actionName, id, data, state, setState)
       actionStatus: processed.receipt.status
     });
   } catch (e) {
+    let actionStatus;
+    console.log('\nCaught exception: ' + e);
+    if (e instanceof RpcError) {
+      actionStatus = e.json.error.what;
+      console.log(JSON.stringify(e.json, null, 2));
+    } else {
+      actionStatus = e;
+    }
     setState({
       ...state,
-      actionStatus: 'wrong'
+      actionStatus
     });
-    console.log('\nCaught exception: ' + e);
-    if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
   }
 };
 
@@ -65,30 +71,12 @@ const Provider = ({ children }) => {
 
   const tweet = async (text, id) => {
     if (text.length < 140) {
-      try {
-        const data = {
-          user: id,
-          text: text,
-          tweeted_at: new Date().getTime()
-        };
-        const result = await action('twitter', 'tweet', id, data);
-        const { processed } = result;
-        setState({
-          ...state,
-          actionStatus: processed.receipt.status
-        });
-      } catch (e) {
-        let status = e;
-        console.log('\nCaught exception: ' + e);
-        if (e instanceof RpcError) {
-          status += `: ${e.json.error.what}`;
-          console.log(JSON.stringify(e.json, null, 2));
-        }
-        setState({
-          ...state,
-          status
-        });
-      }
+      const data = {
+        user: id,
+        text: text,
+        tweeted_at: new Date().getTime()
+      };
+      handleAction('twitter', 'tweet', id, data, state, setState);
     } else {
       setState({
         ...state,
