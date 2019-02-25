@@ -136,28 +136,10 @@ const Provider = ({ children }) => {
   };
 
   const deleteUser = async id => {
-    setState({
-      ...state,
-      actionStatus: 'loading'
-    });
-    try {
-      const data = {
-        user: id
-      };
-      const result = await action('accountbook', 'erase', id, data);
-      const { processed } = result;
-      setState({
-        ...state,
-        actionStatus: `${processed.receipt.status}:delete`
-      });
-    } catch (e) {
-      setState({
-        ...state,
-        actionStatus: 'wrong'
-      });
-      console.log('\nCaught exception: ' + e);
-      if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
-    }
+    const data = {
+      user: id
+    };
+    handleAction('accountbook', 'erase', id, data, state, setState);
   };
 
   const initialState = {
