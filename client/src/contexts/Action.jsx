@@ -36,23 +36,32 @@ const action = async (account, name, id, data) => {
 const handleAction = async (contractName, actionName, id, data, state, setState) => {
   setState({
     ...state,
-    actionStatus: 'loading'
+    actionStatus: {
+      ...state.actionStatus,
+      message: 'loading',
+    }
   });
   try {
     const result = await action(contractName, actionName, id, data);
     const { processed } = result;
     setState({
       ...state,
-      actionStatus: processed.receipt.status
+      actionStatus: {
+        actionName,
+        message: processed.receipt.status,
+      },
     });
   } catch (e) {
-    let actionStatus;
+    const actionStatus = {
+      actionName,
+      message: '',
+    };
     console.log('\nCaught exception: ' + e);
     if (e instanceof RpcError) {
-      actionStatus = e.json.error.what;
+      actionStatus.message = e.json.error.what;
       console.log(JSON.stringify(e.json, null, 2));
     } else {
-      actionStatus = e;
+      actionStatus.message = e;
     }
     setState({
       ...state,
@@ -65,7 +74,10 @@ const Provider = ({ children }) => {
   const changeStatus = newStatus => {
     setState({
       ...state,
-      actionStatus: newStatus
+      actionStatus: {
+        ...state.actionStatus,
+        message: newStatus,
+      }
     });
   };
 
@@ -80,7 +92,10 @@ const Provider = ({ children }) => {
     } else {
       setState({
         ...state,
-        actionStatus: 'long'
+        actionStatus: {
+          actionName: 'tweet',
+          message: 'long',
+        }
       });
     }
   };
@@ -113,12 +128,15 @@ const Provider = ({ children }) => {
   };
 
   const initialState = {
-    actionStatus: '',
+    actionStatus: {
+      actionName: '',
+      message: '',
+    },
     tweet,
     signIn,
     updateProfile,
     changeStatus,
-    deleteUser
+    deleteUser,
   };
   const [state, setState] = useState(initialState);
 

@@ -29,18 +29,25 @@ const InputArea = styled.textarea`
   height: 100px;
 `;
 const Message = styled.p`
-  margin: 0 auto;
+  margin: 5px auto;
   color: ${props => props.color || 'black'};
 `;
 
 const Status = ({ actionStatus }) => {
-  switch (actionStatus) {
-    case 'wrong':
-      return <Message color='blue'>Invalid account</Message>;
-    case 'loading':
-      return <Message color='blue'>Now loading...</Message>;
-    default:
-      return <></>;
+  if (
+    actionStatus.actionName === 'update' ||
+    actionStatus.actionName === 'erase'
+  ) {
+    switch (actionStatus.message) {
+      case 'loading':
+        return <Message color='blue'>Now loading...</Message>;
+      case '':
+        return <></>;
+      default:
+        return <Message color='red'>{actionStatus.message}</Message>;
+    }
+  } else {
+    return <></>;
   }
 };
 
@@ -55,13 +62,15 @@ const EditProfile = ({ toggleEdit }) => {
   const [newAbout, setAbout] = useState(about);
 
   useEffect(() => {
-    if (actionStatus === 'executed:delete') {
-      toggleEdit(false);
-      resetAccount();
-    } else if (actionStatus === 'executed') {
-      changeStatus('');
-      toggleEdit(false);
-      fetchAccountBook(id);
+    if (actionStatus.message === 'executed') {
+      if (actionStatus.actionName === 'erase') {
+        toggleEdit(false);
+        resetAccount();
+      } else {
+        changeStatus('');
+        toggleEdit(false);
+        fetchAccountBook(id);
+      }
     }
   });
 

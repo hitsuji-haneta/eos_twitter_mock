@@ -16,21 +16,26 @@ const Input = styled.textarea`
   width: 95%;
 `;
 const Message = styled.p`
-  color: blue;
+  margin: 5px auto;
+  color: ${props => props.color || 'black'};
 `;
 
-const Status = ({actionStatus}) => {
-  switch (actionStatus) {
-    case 'executed':
-      return <Message>Send your tweet.</Message>
-    case 'long':
-      return <Message>Too long. 140 characters maximum.</Message>
-    case '':
-      return <></>;
-    default:
-      return <Message>{actionStatus}</Message>
+const Status = ({ actionStatus }) => {
+  if (actionStatus.actionName === 'tweet') {
+    switch (actionStatus.message) {
+      case 'executed':
+        return <Message color='blue'>Send your tweet.</Message>;
+      case 'long':
+        return <Message color='red'>Too long. 140 characters maximum.</Message>;
+      case '':
+        return <></>;
+      default:
+        return <Message color='red'>{actionStatus.message}</Message>;
+    }
+  } else {
+    return <></>;
   }
-}
+};
 
 const TweetForm = () => {
   const { tweet, actionStatus, changeStatus } = useContext(Action.Context);
@@ -39,19 +44,22 @@ const TweetForm = () => {
   const [text, setText] = useState('');
 
   useEffect(() => {
-    if(actionStatus === 'executed') {
+    if (
+      actionStatus.actionName === 'tweet' &&
+      actionStatus.message === 'executed'
+    ) {
       setText('');
       postContext.fetchPosts();
       setTimeout(() => {
         changeStatus('');
       }, 1000);
-    };
+    }
   });
 
   return (
     <Wrapper>
       <Status actionStatus={actionStatus} />
-      <Input value={text} rows="5" onChange={(e) => setText(e.target.value)} />
+      <Input value={text} rows='5' onChange={e => setText(e.target.value)} />
       <Button onClick={() => tweet(text, id)}>tweet</Button>
     </Wrapper>
   );

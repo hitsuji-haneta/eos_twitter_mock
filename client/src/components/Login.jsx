@@ -19,14 +19,14 @@ const Input = styled.input`
   width: 50%;
 `;
 const Message = styled.p`
-  margin: 0 auto;
-  color: ${props => props.color || "black"};
+  margin: 5px auto;
+  color: ${props => props.color || 'black'};
 `;
 
 const Status = ({status}) => {
   switch (status) {
     case 'wrong':
-      return <Message color='blue'>Invalid account</Message>
+      return <Message color='red'>Invalid account</Message>
     case 'loading':
       return <Message color='blue'>Now loading...</Message>
     default:
