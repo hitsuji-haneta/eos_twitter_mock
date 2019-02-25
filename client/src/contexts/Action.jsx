@@ -98,31 +98,13 @@ const Provider = ({ children }) => {
   };
 
   const signIn = async (id, name, mail, about) => {
-    setState({
-      ...state,
-      actionStatus: 'loading'
-    });
-    try {
-      const data = {
-        user: id,
-        name,
-        mail,
-        about
-      };
-      const result = await action('accountbook', 'create', id, data);
-      const { processed } = result;
-      setState({
-        ...state,
-        actionStatus: processed.receipt.status
-      });
-    } catch (e) {
-      setState({
-        ...state,
-        actionStatus: 'wrong'
-      });
-      console.log('\nCaught exception: ' + e);
-      if (e instanceof RpcError) console.log(JSON.stringify(e.json, null, 2));
-    }
+    const data = {
+      user: id,
+      name,
+      mail,
+      about
+    };
+    handleAction('accountbook', 'create', id, data, state, setState);
   };
 
   const updateProfile = async (id, name, mail, about) => {
