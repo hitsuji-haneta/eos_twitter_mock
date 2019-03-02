@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import Action from '../contexts/Action';
 import Post from '../contexts/Post';
 import Account from '../contexts/Account';
 import Button from '../shared/Button';
+import useActions from '../hooks/useActions';
 
 const Wrapper = styled.div`
   margin: 20px;
@@ -38,7 +38,7 @@ const Status = ({ actionStatus }) => {
 };
 
 const TweetForm = () => {
-  const { tweet, actionStatus, changeStatus } = useContext(Action.Context);
+  const { tweet, actionStatus, changeStatus } = useActions();
   const postContext = useContext(Post.Context);
   const { id } = useContext(Account.Context).state;
   const [text, setText] = useState('');
