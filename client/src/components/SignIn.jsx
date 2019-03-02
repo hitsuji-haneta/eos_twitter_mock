@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import Action from '../contexts/Action';
 import Account from '../contexts/Account';
 import Button from '../shared/Button';
+import useActions from '../hooks/useActions';
 
 const Container = styled.div`
   margin: 20px;
@@ -49,8 +49,7 @@ const Status = ({ actionStatus }) => {
 };
 
 const SignIn = ({ switchLogin }) => {
-  const { signIn, actionStatus, changeStatus } =
-    useContext(Action.Context) || {};
+  const { signIn, actionStatus, changeStatus } = useActions();
   const { fetchAccountBook } = useContext(Account.Context) || {};
   const [id, setId] = useState('');
   const [name, setName] = useState('');

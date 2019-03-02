@@ -127,4 +127,4 @@ const useActions = () => {
   };
 };
 
-export default useActions();
+export default useActions;
