@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import Action from '../contexts/Action';
 import Account from '../contexts/Account';
 import Button from '../shared/Button';
+import useActions from '../hooks/useActions';
 
 const Container = styled.div`
   margin: 20px;
@@ -54,9 +54,7 @@ const Status = ({ actionStatus }) => {
 const EditProfile = ({ toggleEdit }) => {
   const { state, fetchAccountBook, resetAccount } = useContext(Account.Context);
   const { id, name, mail, about } = state;
-  const { actionStatus, changeStatus, updateProfile, deleteUser } = useContext(
-    Action.Context
-  );
+  const { actionStatus, changeStatus, updateProfile, deleteUser } = useActions();
   const [newName, setName] = useState(name);
   const [newMail, setMail] = useState(mail);
   const [newAbout, setAbout] = useState(about);
